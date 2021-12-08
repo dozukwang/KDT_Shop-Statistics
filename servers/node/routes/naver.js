@@ -1,7 +1,7 @@
 const express = require("express");
-
 const router = express.Router();
 const bodyParser = require("body-parser");
+require('dotenv').config()
 
 // localhost:5001/board?key=1&key2=value2&key3=value3
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -10,8 +10,8 @@ router.use(express.json());
 // 네이버 API 요청 위한 모듈
 const request = require('request')
 
-const client_id = '';
-const client_secret = '';
+const client_id = process.env.NAVER_CLIENT_ID;
+const client_secret = process.env.NAVER_CLIENT_SECRET;
 
 // 쇼핑 검색 API
 // /search
@@ -27,7 +27,7 @@ router.get('/search', function (req, res, next) {
     };
    //네이버 응답
    request.get(options, function (error, response, body) {
-     if (!error && response.statusCode == 200) {
+     if (!error && response.statusCode === 200) {
        res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
        res.end(body);
      } else {
@@ -47,7 +47,7 @@ router.get('/autoKeyword', function (req, res, next) {
 
   //  자동완성 요청
    request.get(api_url, function (error, response, body) {
-     if (!error && response.statusCode == 200) {
+     if (!error && response.statusCode === 200) {
        res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
        res.end(body);
      } else {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'
 import SearchBar from './SearchBar';
+import SearchedItem from './SearchedItem';
 
 const Home = () => {
 
@@ -8,9 +9,9 @@ const Home = () => {
   const [searchResult, setSearchResult] = useState({})
   const [autoSearchKeyword, setAutoSearchKeyword] = useState([])
 
-  const handleGetData = () => {
+  const handleGetData = (value) => {
     axios
-    .get(`/search?query=${keyword}`)
+    .get(`/search?query=${value? value : keyword}`)
     .then((response) => {
         var data = response.data
         console.log('응답데이터:', response.data)
@@ -21,15 +22,13 @@ const Home = () => {
       })
   }
 
-  const changeKeyword = (event) => {
-    setKeyword(event.target.value)
-    console.log('input value:', event.target.value)
-    getAutoKeyword(event.target.value)
+  const changeKeyword = (item) => {
+    setKeyword(item)
   }
 
-  const getAutoKeyword = (word) => {
+  const getAutoKeyword = (value) => {
     axios
-    .get(`/autoKeyword?keyword=${word? word : keyword}`)
+    .get(`/autoKeyword?keyword=${value? value : keyword}`)
     .then((response) => {
       var data = response.data
       setAutoSearchKeyword(data)
@@ -43,13 +42,15 @@ const Home = () => {
     <div>
       <h1>홈페이지</h1>
       <br/>
-      <SearchBar keyword={keyword}
+      <SearchBar
       changeKeyword={changeKeyword}
       autoSearchKeyword={autoSearchKeyword}
-      getAutoKeyword={getAutoKeyword}/>
+      getAutoKeyword={getAutoKeyword}
+      handleGetData={handleGetData}
+      keyword={keyword}/>
       <br/>
-      <button onClick={handleGetData}>검색버튼</button>
-      <div> 목록 예정 </div>
+      <SearchedItem
+      searchResult={searchResult}/>
     </div>
   );
 };
