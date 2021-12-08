@@ -8,7 +8,7 @@ const SearchBar = (props) => {
   const [items, setItems] = useState([])
 
   useEffect(()=>{
-    console.log('값 바뀜')
+    console.log('데이터바꿈')
     setItems([])
     if (autoSearchKeyword.items !== undefined && autoSearchKeyword.items[0].length > 0) {
       autoSearchKeyword.items[0].forEach((item, index) => {
@@ -24,8 +24,8 @@ const SearchBar = (props) => {
     }
   }, [autoSearchKeyword])
 
-  const handleOnSearch = (string, results) => {
-    console.log(string) //input value 내용과 같음
+  const handleOnSearch = (string) => {
+    //input value 내용과 같음
     //Search value를 자동완성어 API로 보냄
     getAutoKeyword(string)
   }

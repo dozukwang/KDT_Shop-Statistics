@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table } from 'reactstrap'
+import { Table, Button } from 'reactstrap'
+import { BsLink } from "react-icons/bs";
 
 const SearchedItem = (props) => {
   const { searchResult, keyword } = props
@@ -7,14 +8,19 @@ const SearchedItem = (props) => {
   const SearchedItemList = (props) => {
     const { item, index } = props
     
+    const imgStyle = {
+      width: '50px',
+      height: '50px'
+    }
     return (
         <tr>
           <th>{index + 1}</th>
+          <th><img style={imgStyle} src={item.image} alt='상품이미지' /></th>
           <td>{item.title.replace(/<b>|<\/b>/g,'')}</td>
           <td>{item.lprice}</td>
           <td>{item.mallName}</td>
-          <td>{item.link}</td>
-          <td>구매하기</td>
+          <td><a href={item.link}><BsLink/></a></td>
+          <td><Button>구매</Button></td>
         </tr>
     )
   }
@@ -26,6 +32,7 @@ const SearchedItem = (props) => {
       <Table hover>
         <thead>
           <tr>
+            <th></th>
             <th></th>
             <th>상품명</th>
             <th>가격</th>
