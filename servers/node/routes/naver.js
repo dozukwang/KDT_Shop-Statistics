@@ -3,6 +3,13 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 require('dotenv').config()
 
+const cors = require('cors');
+const corsOptions = {
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "DELETE", "PUT"]
+}
+router.use(cors(corsOptions));
+
 // localhost:5001/board?key=1&key2=value2&key3=value3
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(express.json());

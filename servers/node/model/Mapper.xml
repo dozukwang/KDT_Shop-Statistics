@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 이름은 자유롭게 작성 가능 -->
+<mapper namespace="Mapper"> 
+  <!-- 이전 구매여부 확인하기 -->
+  <!-- <select id="selectProductList">
+    SELECT productId
+    FROM shop.product
+    WHERE productId = #{item.productId}
+  </select> -->
+    
+  <!-- <update id='updateProduct'>
+    UPDATE shop.product
+    SET buyCount = buyCount + 1
+    , updateDate = now()
+    WHERE productId = #{item.productId}
+  </update> -->
+
+  <!-- 구매한 물품 추가하기 -->
+  <insert id="insertProduct">
+    INSERT INTO shop.product
+    (productId,title,image,category1,category2,category3,category4,buyCount,insertDate)
+    VALUES
+    (#{item.productId}, #{item.title}, #{item.image}, #{item.category1}, #{item.category2}, #{item.category3}, #{item.category4}, 1, now())
+    on duplicate key update
+    buyCount = buyCount + 1
+    , updateDate = now()
+  </insert>
+
+  <!-- 구매 취소하기 -->
+  <search id="deleteProducts">
+    SELECT productId, buyCount
+    FROM shop.product
+    WHERE productId = #{productId}
+  </search>
+
+    <update>
+      UPDATE shop.product
+      SET buyCount = buyCount - 1
+      , updateDate = now()
+      WHERE productId = #{productId}
+    </update>
+
+        <!-- 구매한 물품 추가하기 -->
+    <delete id="deleteProduct">
+      DELETE from shop.product
+      WHERE productId = #{productId}
+    </delete>
+
+
+  <!-- 페이징 처리는 2개의 내용을 다뤄야함  -->
+  <!-- 검색할 조건을 FROM() 안에 작성 그리고
+  1. Limit을 통해서 한 페이지에 몇개를 보여줄 것인지 설정
+  이를 위해 start/length 등을 설정해 줘야함
+  -->
+  <!-- <select id="selectBoardListPage">
+    SELECT R1.* FROM(	
+      select id, title, content, insert_user
+      , DATE_FORMAT(insert_date , '%Y-%m-%d %H:%i:%S' ) as insert_date 
+      from react.board a
+      <if test='searchData != null and searchData != ""'>
+      where content  like concat('%',#{searchData} , '%')
+      </if>
+      order by id
+    ) R1
+    LIMIT ${length} OFFSET ${start}	
+  </select> -->
+
+  <!-- 2. 전체 데이터 개수 가져오기 -->
+  <!-- <select id="selectBoardListCount">
+    SELECT count(id) total_count
+    FROM react.board a -->
+    <!-- 만약 특정 단어로 검색을 진행? 검색된 결과에 대한 전체 개수를 따로 구해야 함. if로 구현... -->
+    <!-- <if test='searchData != null and searchData != ""'>
+      where content  like concat('%',#{searchData} , '%')
+    </if>
+  </select> -->
+
+</mapper>

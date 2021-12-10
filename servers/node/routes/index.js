@@ -1,5 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+
+const cors = require('cors');
+const corsOptions = {
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "DELETE", "PUT"]
+}
+router.use(cors(corsOptions));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
