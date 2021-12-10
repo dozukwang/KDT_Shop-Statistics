@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'
 import SearchBar from './SearchBar';
-import SearchedItem from './SearchedItem';
+import SearchedList from './SearchedList';
 
 const Home = () => {
 
@@ -11,7 +11,7 @@ const Home = () => {
 
   const handleGetData = (value) => {
     axios
-    .get(`/search?query=${value? value : keyword}`)
+    .get(`http://localhost:5001/search?query=${value? value : keyword}`)
     .then((response) => {
         var data = response.data
         console.log('응답데이터:', response.data)
@@ -28,7 +28,7 @@ const Home = () => {
 
   const getAutoKeyword = (value) => {
     axios
-    .get(`/autoKeyword?keyword=${value? value : keyword}`)
+    .get(`http://localhost:5001/autoKeyword?keyword=${value? value : keyword}`)
     .then((response) => {
       var data = response.data
       setAutoSearchKeyword(data)
@@ -41,8 +41,7 @@ const Home = () => {
 
   return (
     <div>
-      <h1>홈페이지</h1>
-      <br/>
+      <h1 className="search">상품 검색하기</h1>
       <SearchBar
       changeKeyword={changeKeyword}
       autoSearchKeyword={autoSearchKeyword}
@@ -50,7 +49,7 @@ const Home = () => {
       handleGetData={handleGetData}
       keyword={keyword}/>
       <br/>
-      <SearchedItem
+      <SearchedList
       searchResult={searchResult}/>
     </div>
   );
