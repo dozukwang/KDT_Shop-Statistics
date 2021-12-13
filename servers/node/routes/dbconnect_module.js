@@ -13,7 +13,11 @@ const connection = mysql.createConnection({
   user: "dahyun",
   password: "1234",
 });
+
+console.log(router)
+
 router.post("/", (req, res) => {
+  console.log("3차들어옴")
   const mybatisMapper = require("mybatis-mapper");
   const param = req.body;
   console.log(param);
@@ -60,4 +64,5 @@ router.post("/", (req, res) => {
     console.log("========= Node Mybatis Query Log End =========\n");
   });
 });
+
 module.exports = router;

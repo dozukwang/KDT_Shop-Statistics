@@ -25,9 +25,6 @@ const client_secret = process.env.NAVER_CLIENT_SECRET;
 router.get('/search', function (req, res, next) {
   try{
    var api_url = 'https://openapi.naver.com/v1/search/shop.json?query=' + encodeURI(req.query.query);
-   
-   console.log(api_url)
-
    var options = {
        url: api_url,
        headers: {'X-Naver-Client-Id':client_id, 'X-Naver-Client-Secret': client_secret}

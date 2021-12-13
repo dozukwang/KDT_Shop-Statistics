@@ -27,25 +27,17 @@
     , updateDate = now()
   </insert>
 
-  <!-- 구매 취소하기 -->
-  <search id="deleteProducts">
-    SELECT productId, buyCount
+  <select id="totalProductBought">
+    SELECT category1, sum(buyCount) as buyCount
     FROM shop.product
+    group by category1
+  </select>
+
+  <!-- 구매물품 취소하기 -->
+  <delete id="deleteProduct">
+    DELETE from shop.product
     WHERE productId = #{productId}
-  </search>
-
-    <update>
-      UPDATE shop.product
-      SET buyCount = buyCount - 1
-      , updateDate = now()
-      WHERE productId = #{productId}
-    </update>
-
-        <!-- 구매한 물품 추가하기 -->
-    <delete id="deleteProduct">
-      DELETE from shop.product
-      WHERE productId = #{productId}
-    </delete>
+  </delete>
 
 
   <!-- 페이징 처리는 2개의 내용을 다뤄야함  -->
