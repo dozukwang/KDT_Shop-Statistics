@@ -4,24 +4,38 @@ import { BsLink } from "react-icons/bs";
 import axios from 'axios'
 
 const ItemList = (props) => {
-  const { item, index } = props
-  
+  const { item, index, isDelete, filterCategoryItemList, filterCategoryBuyCount } = props
+
   const handlePurchase = (item) => {
-    console.log('구매입력 함수 실행됨')
-    axios
-    .post("http://localhost:5001/purchase?type=buy", {
-      item
-    })
-    .then((response) => {
-      try {
-        const data = response
-        console.log('클라응답response: ', data)
-        console.log('클라응답response.data:', data.data)
-      } catch (error) {
-        console.log(error);
+    if(isDelete === false || isDelete === undefined){
+      axios
+      .post("http://localhost:5001/purchase?type=buy", {
+        item
+      })
+      .then((response) => {
+        try {
+          console.log('클라응답response: ', response)
+        } catch (error) {
+          console.log(error);
+        }
+      })
+      .catch((error) => {console.log(error)});
+    } else if (isDelete === true){
+      axios
+      .post("http://localhost:5001/purchase?type=delete", {
+        item
+      })
+      .then((response) => {
+        try {
+          console.log('클라응답response: ', response)
+          filterCategoryItemList(item.productId)
+          filterCategoryBuyCount(item.category1, item.buyCount)
+        } catch (error) {
+          console.log(error);
+        }
+      })
+      .catch((error) => {console.log(error)});
       }
-    })
-    .catch((error) => {console.log(error)});
   }
 
   const imgStyle = {
@@ -34,9 +48,12 @@ const ItemList = (props) => {
         <th><img style={imgStyle} src={item.image} alt='상품이미지' /></th>
         <td>{item.title.replace(/<b>|<\/b>/g,'')}</td>
         <td>{item.lprice ? item.lprice : '.'}</td>
+        {isDelete ? <td>{item.buyCount}</td> : null}
         <td>{item.mallName}</td>
-        <td><a href={item.link ? item.lprice : '.'}><BsLink/></a></td>
-        <td><Button onClick={()=>(handlePurchase(item))}>구매</Button></td>
+        <td>
+          <a href={item.link ? item.link : '.'}><BsLink/></a>
+        </td>
+        <td><Button onClick={()=>(handlePurchase(item))}>{isDelete ? '구매내역 삭제' : '구매'}</Button></td>
       </tr>
   )
 }

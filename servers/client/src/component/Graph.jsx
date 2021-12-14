@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Graph = (props) => {
-  const { getCategoryName } = props
-  const [totalAmount, setTotalAmount] = useState([])
-  const [items, setItems] = useState([])
+  const { getCategoryName, setTotalAmount, totalAmount } = props
+  const [ items, setItems ] = useState([])
   
   useEffect(()=>{
     getPurchaseList()
@@ -31,6 +30,7 @@ const Graph = (props) => {
     .post("http://localhost:5001/purchase?type=totalamount")
     .then((response) => {
       setTotalAmount(response.data.json)
+      console.log(response.data.json)
     })
     .catch((err) => console.log(err))
   }
@@ -38,7 +38,6 @@ const Graph = (props) => {
   //클릭한 카테고리명 출력되는거 확인 -> 카테고리명으로 검색할 수 있게
   const getCategoryList = (event) => {
     getCategoryName(event.category)
-    console.log('이벤트', event)
   }
   return (
     <>
