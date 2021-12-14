@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-const Graph = () => {
+const Graph = (props) => {
+  const { getCategoryName } = props
   const [totalAmount, setTotalAmount] = useState([])
   const [items, setItems] = useState([])
+  
   useEffect(()=>{
     getPurchaseList()
   }, [])
@@ -33,15 +35,16 @@ const Graph = () => {
     .catch((err) => console.log(err))
   }
 
-  const getCategoryList = () => {
-    console.log('하이')
+  //클릭한 카테고리명 출력되는거 확인 -> 카테고리명으로 검색할 수 있게
+  const getCategoryList = (event) => {
+    getCategoryName(event.category)
+    console.log('이벤트', event)
   }
   return (
     <>
-    <h1 onClick={getCategoryList}>하이</h1>
       {/* <ResponsiveContainer width="100%" height="100%"> */}
-        <LineChart
-          width={500}
+        <BarChart
+          width={800}
           height={300}
           data={items}
           margin={{
@@ -55,9 +58,8 @@ const Graph = () => {
           <XAxis dataKey="category" />
           <YAxis /> 
           <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="합계" stroke="#8884d8" activeDot={{ r: 8 }} />
-        </LineChart>
+          <Bar onClick={getCategoryList} dataKey="합계" barSize={30} fill="#8884d8" stroke="#8884d8" />
+        </BarChart>
       {/* </ResponsiveContainer> */}
     </>
   );

@@ -19,24 +19,31 @@
   <!-- 구매한 물품 추가하기 -->
   <insert id="insertProduct">
     INSERT INTO shop.product
-    (productId,title,image,category1,category2,category3,category4,buyCount,insertDate)
+    (productId,title,image,category1,category2,category3,category4, lprice, link, buyCount,insertDate)
     VALUES
-    (#{item.productId}, #{item.title}, #{item.image}, #{item.category1}, #{item.category2}, #{item.category3}, #{item.category4}, 1, now())
+    (#{item.productId}, #{item.title}, #{item.image}, #{item.category1}, #{item.category2}, #{item.category3}, #{item.category4}, #{item.lprice}, #{item.link}, 1, now())
     on duplicate key update
     buyCount = buyCount + 1
     , updateDate = now()
   </insert>
 
+  <!-- 구매물품 내역 통계 -->
   <select id="totalProductBought">
     SELECT category1, sum(buyCount) as buyCount
     FROM shop.product
     group by category1
   </select>
 
+  <!-- 카테고리 별 구매물품 내역 찾기 -->
+  <select id="categoryItemBought">
+    SELECT * FROM  shop.product
+    WHERE category1 = #{category}
+  </select>
+
   <!-- 구매물품 취소하기 -->
-  <delete id="deleteProduct">
-    DELETE from shop.product
-    WHERE productId = #{productId}
+  <delete id="deleteProductBought">
+    DELETE FROM shop.product
+    WHERE productId = #{item.productId}
   </delete>
 
 

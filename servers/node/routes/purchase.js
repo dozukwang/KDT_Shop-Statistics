@@ -13,8 +13,9 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(express.json());
 
 router.post("/", (req, res, next) => {
-  // const item = req.body //보낸 item정보 객체
   const type = req.query.type; //구매 또는 취소
+  console.log(req.body.category)
+
   // //구매하기
   if ('buy' === type) {
     try {
@@ -28,12 +29,37 @@ router.post("/", (req, res, next) => {
     } catch(error) {
       console.log(error)
     }
-  } else if ('totalamount' === type){
+  } else if('delete' === type){
+    try {
+      const dbconnect_Module = require("./dbconnect_module");
+      req.body.mapper = "Mapper"; // mybatis xml 파일명
+      req.body.crud = "delete"; // select, insert, update, delete 중 선택
+      req.body.mapper_id = "deleteProductBought"; //실행할 구문 id 입력
+
+      router.use("/", dbconnect_Module);
+      next("route");
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  else if ('totalamount' === type){
     try {
       const dbconnect_Module = require("./dbconnect_module");
       req.body.mapper = "Mapper"; // mybatis xml 파일명
       req.body.crud = "select"; // select, insert, update, delete 중 선택
       req.body.mapper_id = "totalProductBought"; //실행할 구문 id 입력
+
+      router.use("/", dbconnect_Module);
+      next("route");
+    } catch(error) {
+      console.log(error)
+    }
+  } else if ('categoryItem' === type){
+    try {
+      const dbconnect_Module = require("./dbconnect_module");
+      req.body.mapper = "Mapper"; // mybatis xml 파일명
+      req.body.crud = "select"; // select, insert, update, delete 중 선택
+      req.body.mapper_id = "categoryItemBought"; //실행할 구문 id 입력
 
       router.use("/", dbconnect_Module);
       next("route");

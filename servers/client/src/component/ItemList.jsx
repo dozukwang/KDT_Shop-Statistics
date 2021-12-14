@@ -33,9 +33,9 @@ const ItemList = (props) => {
         <th>{index + 1}</th>
         <th><img style={imgStyle} src={item.image} alt='상품이미지' /></th>
         <td>{item.title.replace(/<b>|<\/b>/g,'')}</td>
-        <td>{item.lprice}</td>
+        <td>{item.lprice ? item.lprice : '.'}</td>
         <td>{item.mallName}</td>
-        <td><a href={item.link}><BsLink/></a></td>
+        <td><a href={item.link ? item.lprice : '.'}><BsLink/></a></td>
         <td><Button onClick={()=>(handlePurchase(item))}>구매</Button></td>
       </tr>
   )

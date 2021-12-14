@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-// import ItemList from './ItemList';
+import ItemList from './ItemList';
 import { Table } from 'reactstrap'
 
-const PurchasedList = () => {
-  const [ keyword, setKeyword ] = useState("")
+const PurchasedList = (props) => {
+  const { category, categorySearchResult } = props
+
 
   return (
     <>
-      <div>{keyword? `${keyword} 구매목록` : '구매상품 목록'}</div>
+      <div>{category? `${category} 구매목록` : ''}</div>
       <Table hover>
         <thead>
           <tr>
@@ -20,9 +21,9 @@ const PurchasedList = () => {
           </tr>
         </thead>
         <tbody>
-          {/* {searchResult !== undefined && searchResult.total > 0
-          ? searchResult.items.map((item, index) => (<ItemList key={item.productId} item={item} index={index} />))
-          : null} */}
+          {categorySearchResult !== undefined && categorySearchResult.length > 0
+          ? categorySearchResult.map((item, index) => (<ItemList key={item.productId} item={item} index={index} />))
+          : null}
         </tbody>
       </Table>
     </>
