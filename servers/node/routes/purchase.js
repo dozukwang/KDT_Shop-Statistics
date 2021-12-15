@@ -29,7 +29,8 @@ router.post("/", (req, res, next) => {
     } catch(error) {
       console.log(error)
     }
-  } else if('delete' === type){
+  }
+  else if('delete' === type){
     try {
       const dbconnect_Module = require("./dbconnect_module");
       req.body.mapper = "Mapper"; // mybatis xml 파일명
@@ -54,7 +55,8 @@ router.post("/", (req, res, next) => {
     } catch(error) {
       console.log(error)
     }
-  } else if ('categoryItem' === type){
+  }
+  else if ('categoryItem' === type){
     try {
       const dbconnect_Module = require("./dbconnect_module");
       req.body.mapper = "Mapper"; // mybatis xml 파일명

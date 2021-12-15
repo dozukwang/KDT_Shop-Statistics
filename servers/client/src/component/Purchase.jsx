@@ -6,9 +6,10 @@ import PurchasedList from './PurchasedList';
 const Purchase = () => {
   const [ category, setCategory ] = useState("")
   const [ categorySearchResult, setCategorySearchResult ] = useState([])
-  const [ isDelete, setIsDelete ] = useState(false)
   const [ totalAmount, setTotalAmount ] = useState([])
+  const [ isDelete, setIsDelete ] = useState(false)
 
+  // 해당 페이지에서는 구매하기 -> 삭제하기로 변경하도록 하는 감지값
   useEffect(() => {
     setIsDelete(true)
     return(()=>{
@@ -16,6 +17,7 @@ const Purchase = () => {
     })
   },[])
 
+  // 그래프에서 특정 카테고리를 클릭하면 해당 카테고리의 구매 정보를 출력
   useEffect(() => {
     if (category !== "") {
       getCategoryItemList()
@@ -56,6 +58,8 @@ const Purchase = () => {
       return item
     }))
   }
+
+  // 페이지 처리
 
   return (
     <>

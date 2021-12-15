@@ -23,12 +23,17 @@ const client_secret = process.env.NAVER_CLIENT_SECRET;
 // 쇼핑 검색 API
 // /search
 router.get('/search', function (req, res, next) {
+  const start = req.query.start
+  const display = req.query.display
+
   try{
-   var api_url = 'https://openapi.naver.com/v1/search/shop.json?query=' + encodeURI(req.query.query);
+   var api_url = 'https://openapi.naver.com/v1/search/shop.json?query=' + encodeURI(req.query.query) + `&start=${start}&display=${display < 1? 10: display}`;
+
    var options = {
        url: api_url,
        headers: {'X-Naver-Client-Id':client_id, 'X-Naver-Client-Secret': client_secret}
     };
+
    //네이버 응답
    request.get(options, function (error, response, body) {
      if (!error && response.statusCode === 200) {
