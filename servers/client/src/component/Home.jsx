@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import SearchBar from './SearchBar';
 import SearchedList from './SearchedList';
@@ -16,23 +16,31 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 20 // 페이지 당 보여줄 게시글 수
 
+  useEffect(() => {
+    if (total > 0){
+      setPageCount(Math.ceil(total / limit))
+    }
+  },[total])
+
   // 검색어 저장
   const changeKeyword = (item) => {
     setKeyword(item)
   }
 
   // 검색 정보 가져오기
-  const handleGetData = (value, pageNumber = 1) => {
+  const handleGetData = (value, pageNumber = 0) => {
     axios
     .get(
       `http://localhost:5001/search?query=${value? value : keyword}&start=${pageNumber * 20 + 1 }&display=${limit}`)
     .then((response) => {
         var data = response.data
-        console.log('응답데이터:', response.data)
+        console.log('응답데이터: gethandledata', response.data)
         setSearchResult(data)
         if (total !== data.total) {
-        setTotal(data.total)
-        setPageCount(Math.ceil(data.total / limit))
+          setTotal(data.total)
+        }
+        if (value) {
+          setCurrentPage(1)
         }
       })
       .catch((error) => {
@@ -42,11 +50,9 @@ const Home = () => {
 
   // 페이지 이동 시 새로운 검색 정보 가져오기
   const pageMove = (pageNumber) => {
+    console.log('pageMove 실행됨')
     handleGetData(false, pageNumber)
     setCurrentPage(pageNumber)
-    if (0 === pageNumber) {
-      handleGetData();
-    }
   }
 
 
