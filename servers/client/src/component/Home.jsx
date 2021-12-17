@@ -13,7 +13,8 @@ const Home = () => {
   //페이징 관련
   const [total, setTotal] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  
   const limit = 20 // 페이지 당 보여줄 게시글 수
 
   useEffect(() => {
@@ -33,14 +34,10 @@ const Home = () => {
     .get(
       `http://localhost:5001/search?query=${value? value : keyword}&start=${pageNumber * 20 + 1 }&display=${limit}`)
     .then((response) => {
-        var data = response.data
         console.log('응답데이터: gethandledata', response.data)
-        setSearchResult(data)
-        if (total !== data.total) {
-          setTotal(data.total)
-        }
-        if (value) {
-          setCurrentPage(1)
+        setSearchResult(response.data)
+        if (total !== response.data.total) {
+          setTotal(response.data.total)
         }
       })
       .catch((error) => {
@@ -50,7 +47,7 @@ const Home = () => {
 
   // 페이지 이동 시 새로운 검색 정보 가져오기
   const pageMove = (pageNumber) => {
-    console.log('pageMove 실행됨')
+    console.log('pageMove 실행됨', pageNumber)
     handleGetData(false, pageNumber)
     setCurrentPage(pageNumber)
   }

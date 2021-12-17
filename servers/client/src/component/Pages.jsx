@@ -23,12 +23,12 @@ const Pages = (props) => {
           />
         </PaginationItem>
         {[...Array(pageCount)].map((data, i) => (
-        <PaginationItem active={i === currentPage} key={i} >
+        <PaginationItem active={i === currentPage} key={i}>
           <PaginationLink onClick={() => pageMove(i)} href="#">
-          {i + 1}
+            {i + 1}
           </PaginationLink>
         </PaginationItem>
-        ))}
+      ))}
         <PaginationItem>
           <PaginationLink
             href="#"
